@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend-service
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb://mongodb-service:27017/questionnaire
+    depends_on:
+      - mongodb-service
+    command: ["npm", "run", "start:build"]
+
+  mongodb-service:
+    image: mongo:latest
+    container_name: mongo-db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
